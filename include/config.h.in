@@ -1,0 +1,37 @@
+
+#ifndef LSSP_CONFIG_H
+#define LSSP_CONFIG_H
+
+/* version */
+#define LSSP_VER_MAJOR       1
+#define LSSP_VER_MINOR       0
+
+/* system, headers and libs */
+#define STDC_HEADERS         0
+#define TIME_WITH_SYS_TIME   0
+#define HAVE_SYS_TIME_H      0
+#define HAVE_SYS_RESOURCE_H  0
+
+/* Macros for Fortran names mangling defined by the configure script */
+#define FC_FUNC(s,S)	s ## _		/* for names without underscore */
+#define FC_FUNC_(s,S)	s ## __		/* for names containing underscores */
+
+#define USE_BLAS                 0
+#define USE_LAPACK               0
+#define USE_LASPACK              0
+#define USE_SSPARSE              0
+#define USE_MUMPS                0
+#define USE_PETSC                0
+#define PETSC_VERSION_MAJOR      0
+#define PETSC_VERSION_MINOR      0
+#define USE_ITSOL                0
+#define USE_LIS                  0
+#define USE_QR_MUMPS             0
+#define USE_SUPERLU              0
+#define USE_PARDISO              0
+
+#define USE_FASP                 0
+#define USE_HSL_MI20             0
+#define USE_SXAMG                0
+
+#endif

@@ -1,0 +1,444 @@
+
+\chapter{Installation}
+
+LSSP has interfaces to some external packages, such as PETSc, MUMPS, FASP, 
+UMFPACK (SuiteSparse), KLU (SuiteSparse), LASPACK, ITSOL, LIS, QR\_MUMPS, 
+PARDISO, SUPERLU, and HSL MI20. All these packages are optional. 
+Most packages are enabled by default. However, they will disabled if not found by configuration
+script.
+
+LSSP uses {\color{blue}{\verb|autoconf|}} and {\color{blue}{\verb|make|}} 
+to detect these packages and system parameters,
+to build and to install.
+
+\section{Configuration}
+The simplest way to configure is to run command:
+\begin{evb}
+./configure
+\end{evb}
+
+This command will try to find optional packages from certain directories. Searching details can be read
+from {\color{blue}{configure.in}} and some are explained below. It also sets system parameters.
+
+\section{Options}
+The script {\color{blue}{configure}} has many options, if user would like to check, 
+run command:
+\begin{evb}
+./configure --help
+\end{evb}
+
+Output will be like this,
+\begin{evb}
+`configure' configures this package to adapt to many kinds of systems.
+
+Usage: ./configure [OPTION]... [VAR=VALUE]...
+
+To assign environment variables (e.g., CC, CFLAGS...), specify them as
+VAR=VALUE.  See below for descriptions of some of the useful variables.
+
+Defaults for the options are specified in brackets.
+
+Configuration:
+  -h, --help              display this help and exit
+      --help=short        display options specific to this package
+      --help=recursive    display the short help of all the included packages
+  -V, --version           display version information and exit
+  -q, --quiet, --silent   do not print `checking ...' messages
+      --cache-file=FILE   cache test results in FILE [disabled]
+  -C, --config-cache      alias for `--cache-file=config.cache'
+  -n, --no-create         do not create output files
+      --srcdir=DIR        find the sources in DIR [configure dir or `..']
+
+Installation directories:
+  --prefix=PREFIX         install architecture-independent files in PREFIX
+                          [/usr/local/lssp]
+  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
+                          [PREFIX]
+
+By default, `make install' will install all the files in
+`/usr/local/lssp/bin', `/usr/local/lssp/lib' etc.  You can specify
+an installation prefix other than `/usr/local/lssp' using `--prefix',
+for instance `--prefix=HOME'.
+
+For better control, use the options below.
+
+Fine tuning of the installation directories:
+  --bindir=DIR            user executables [EPREFIX/bin]
+  --sbindir=DIR           system admin executables [EPREFIX/sbin]
+  --libexecdir=DIR        program executables [EPREFIX/libexec]
+  --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
+  --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
+  --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --libdir=DIR            object code libraries [EPREFIX/lib]
+  --includedir=DIR        C header files [PREFIX/include]
+  --oldincludedir=DIR     C header files for non-gcc [/usr/include]
+  --datarootdir=DIR       read-only arch.-independent data root [PREFIX/share]
+  --datadir=DIR           read-only architecture-independent data [DATAROOTDIR]
+  --infodir=DIR           info documentation [DATAROOTDIR/info]
+  --localedir=DIR         locale-dependent data [DATAROOTDIR/locale]
+  --mandir=DIR            man documentation [DATAROOTDIR/man]
+  --docdir=DIR            documentation root [DATAROOTDIR/doc/PACKAGE]
+  --htmldir=DIR           html documentation [DOCDIR]
+  --dvidir=DIR            dvi documentation [DOCDIR]
+  --pdfdir=DIR            pdf documentation [DOCDIR]
+  --psdir=DIR             ps documentation [DOCDIR]
+
+System types:
+  --build=BUILD     configure for building on BUILD [guessed]
+  --host=HOST       cross-compile to build programs to run on HOST [BUILD]
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-omp           enable OpenMP
+  --disable-omp          disable OpenMP (default)
+  --with-omp-flags=FLAGS compiler flags for OpenMP
+  --disable-openmp        do not use OpenMP
+  --enable-rpath          enable use of rpath (default)
+  --disable-rpath         disable use of rpath
+  --with-rpath-flag=FLAG  compiler flag for rpath (e.g., "-Wl,-rpath,")
+  --disable-assert        turn off assertions
+  --enable-opt         enable OPTION support (default)
+  --disable-opt        disable OPTION support
+  --enable-blas         enable BLAS support (default)
+  --disable-blas        disable BLAS support
+  --with-blas=blas BLAS lib
+  --enable-lapack         enable LAPACK support (default)
+  --disable-lapack        disable LAPACK support
+  --with-lapack=lapack LAPACK lib
+  --enable-laspack      enable LASPACK support (default)
+  --disable-laspack     disable LASPACK support
+  --with-laspack-libdir=DIR path for LASPACK library
+  --with-laspack-incdir=DIR path for LASPACK header file
+  --enable-ssparse      enable SSPARSE support (default)
+  --disable-ssparse     disable SSPARSE support
+  --with-ssparse-libdir=DIR path for SSPARSE library
+  --with-ssparse-incdir=DIR path for SSPARSE header file
+  --enable-mumps        enable MUMPS solver (default)
+  --disable-mumps       disable MUMPS solver
+  --with-mumps-incdir=DIR MUMPS header files directory
+  --with-mumps-libdir=DIR MUMPS libraries directory
+  --enable-petsc        enable PETSC solver (default)
+  --disable-petsc       disable PETSC solver
+  --with-petsc-incdir=DIR PETSC header files directory
+  --with-petsc-libdir=DIR PETSC libraries directory
+  --enable-itsol      enable ITSOL support (default)
+  --disable-itsol     disable ITSOL support
+  --with-itsol-libdir=DIR path for ITSOL library
+  --with-itsol-incdir=DIR path for ITSOL header file
+  --enable-lis      enable LIS support (default)
+  --disable-lis     disable LIS support
+  --with-lis-libdir=DIR path for LIS library
+  --with-lis-incdir=DIR path for LIS header file
+  --enable-qrmumps      enable QR_MUMPS support (default)
+  --disable-qrmumps     disable QR_MUMPS support
+  --with-qrmumps-libdir=DIR path for QR_MUMPS library
+  --with-qrmumps-incdir=DIR path for QR_MUMPS header file
+  --enable-fasp      enable FASP support (default)
+  --disable-fasp     disable FASP support
+  --with-fasp-libdir=DIR path for FASP library
+  --with-fasp-incdir=DIR path for FASP header file
+  --enable-superlu      enable SUPERLU support (default)
+  --disable-superlu     disable SUPERLU support
+  --with-superlu-libdir=DIR path for SUPERLU library
+  --with-superlu-incdir=DIR path for SUPERLU header file
+  --enable-pardiso      enable PARDISO support (default)
+  --disable-pardiso     disable PARDISO support
+  --with-pardiso-libdir=DIR path for PARDISO library
+  --with-pardiso-incdir=DIR path for PARDISO header file
+  --enable-hslmi20      enable HSL_MI20 support (default)
+  --disable-hslmi20     disable HSL_MI20 support
+  --with-hslmi20-libdir=DIR path for HSL_MI20 library
+  --with-hslmi20-incdir=DIR path for HSL_MI20 header file
+
+Some influential environment variables:
+  CC          C compiler command
+  CFLAGS      C compiler flags
+  LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+              nonstandard directory <lib dir>
+  LIBS        libraries to pass to the linker, e.g. -l<library>
+  CPPFLAGS    (Objective) C/C++ preprocessor flags, e.g. -I<include dir> if
+              you have headers in a nonstandard directory <include dir>
+  CXX         C++ compiler command
+  CXXFLAGS    C++ compiler flags
+  FC          Fortran compiler command
+  FCFLAGS     Fortran compiler flags
+  CPP         C preprocessor
+
+Use these variables to override the choices made by `configure' or to help
+it to find libraries and programs with nonstandard names/locations.
+\end{evb}
+
+The options follow the same convention,
+\begin{itemize}
+\item \verb|--enable-pack|, to enable package \verb|pack|, such as \verb|--enable-itsol|;
+\item \verb|--disable-pack|, to disable package \verb|pack|, such as \verb|--disable-itsol|;
+\item \verb|--with-pack-libdir=DIR|, to set \verb|DIR| as the library path of package \verb|pack|, 
+    such as \verb|--with-itsol-libdir=/usr/local/itsol/lib/|;
+\item \verb|--with-pack-incdir=DIR|, to set \verb|DIR| as the include path of package \verb|pack|, 
+    such as \verb|--with-itsol-incdir=/usr/local/itsol/include/|;
+\end{itemize}
+
+The configuration script tries to find package from \verb|/usr/local/|, and \verb|/opt/|,
+such as \verb|/usr/local/itsol/|, and it tries to set correct include path, library path, and 
+specific libraries. However, if configure cannot find correct information, 
+users can help configure by using options.
+
+\section{Compilation}
+After configuration, \verb|Makefile| and related scripts will be set correctly.
+A simple {\color{blue}\textbf{make}} command can compile the package,
+
+\begin{evb}
+make
+\end{evb}
+
+\section{Installation}
+Run command:
+\begin{evb}
+make install
+\end{evb}
+The package will be installed to a directory. The default is /usr/local/lssp/. 
+A different directory can be set by \verb|--prefix=DIR|.
+
+\section{Optional Packages}
+
+\subsection{BLAS}
+The BLAS (Basic Linear Algebra Subprograms) are routines that provide standard building blocks for performing basic vector and matrix operations. The Level 1 BLAS perform scalar, vector and vector-vector operations, the Level 2 BLAS perform matrix-vector operations, and the Level 3 BLAS perform matrix-matrix operations. Because the BLAS are efficient, portable, and widely available, they are commonly used in the development of high quality linear algebra software, LAPACK for example.
+
+Official website: \url{http://www.netlib.org/blas/}
+
+BLAS search directories:
+\begin{evb}
+/usr/local/lib
+/usr/local/lib64
+/usr/local/blas/lib
+/usr/local/blas*/lib
+/usr/local/blas/
+/usr/local/blas*/
+/usr/lib
+/usr/lib64
+/opt/blas/lib
+/opt/blas*/lib
+\end{evb}
+
+\subsection{LAPACK}
+LAPACK is written in Fortran 90 and provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems. The associated matrix factorizations (LU, Cholesky, QR, SVD, Schur, generalized Schur) are also provided, as are related computations such as reordering of the Schur factorizations and estimating condition numbers. Dense and banded matrices are handled, but not general sparse matrices. In all areas, similar functionality is provided for real and complex matrices, in both single and double precision.
+
+Official website: \url{http://www.netlib.org/lapack/}
+
+LAPACK search directories:
+\begin{evb}
+/usr/local/lib
+/usr/local/lib64
+/usr/local/lapack/lib
+/usr/local/lapack*/lib
+/usr/local/lapack/
+/usr/local/lapack*/
+/usr/lib
+/usr/lib64
+/opt/lapack/lib
+/opt/lapack*/lib
+\end{evb}
+
+\subsection{LASPack}
+LASPack is a package for solving large sparse systems of linear equations like those which arise from discretization of partial differential equations.  It contains classical as well as selected state-of-the-art algorithms which are commonly used for large sparse systems such as CG-like methods for non-symmetric systems (CGN, GMRES, BiCG, QMR, CGS, and BiCGStab) and multilevel methods such as multigrid and conjugate gradient method preconditioned by multigrid and BPX preconditioners.  LASPack is written in ANSI C and is thus largely portable.  
+
+Official website: {\small \url{http://www.netlib.org/utk/misc/sw_survey/urc/html/LASPack.1.html}}
+
+LASPack search directories (include and lib):
+\begin{evb}
+/usr/local/laspack/
+/usr/local/laspack*/
+/usr/local/
+/usr/
+/opt/laspack/
+/opt/laspack*
+\end{evb}
+The include and lib directories are sub-directories of above directories, such as /usr/local/laspack/include and /usr/local/laspack/lib. Users can also set customized directories with options: --with-laspack-libdir=DIR and --with-laspack-incdir=DIR.
+
+\subsection{SuiteSparse}
+A Suite of Sparse matrix software, including UMFPACK, CHOLMOD, SPQR, KLU, BTF, and ordering methods (AMD, CAMD, COLAMD, and CCOLAMD). 
+
+Official website: \url{https://github.com/jluttine/suitesparse} 
+
+Official website: \url{http://www.suitesparse.com}
+
+SuiteSparse search directories:
+\begin{evb}
+/usr/local/SuiteSparse
+/usr/local/SuiteSparse*
+/usr/local
+/usr
+/opt/SuiteSparse 
+/opt/SuiteSparse*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{MUMPS}
+MUMPS (MUltifrontal Massively Parallel sparse direct Solver) is a software application for the solution of large sparse systems of linear algebraic equations on distributed memory parallel computers. It was developed in European project PARASOL (1996–1999) by CERFACS, IRIT-ENSEEIHT and RAL. The software implements the multifrontal method, which is a version of Gaussian elimination for large sparse systems of equations, especially those arising from the finite element method. It is written in Fortran 90 with parallelism by MPI and it uses BLAS and ScaLAPACK kernels for dense matrix computations. Since 1999, MUMPS has been supported by CERFACS, IRIT-ENSEEIHT, and INRIA. 
+
+Official website: \url{http://mumps.enseeiht.fr/}
+
+MUMPS search directories:
+\begin{evb}
+/usr/local/mumps-seq/
+/usr/local/mumps*-seq/
+/usr/local/
+/usr/
+/opt/mumps-seq/
+/opt/mumps*-seq/
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{PETSC}
+PETSc, pronounced PET-see (the S is silent), is a suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations. It supports MPI, and GPUs through CUDA or OpenCL, as well as hybrid MPI-GPU parallelism. PETSc is intended for use in large-scale application projects, many ongoing computational science projects are built around the PETSc libraries. PETSc is easy to use for beginners. Moreover, its careful design allows advanced users to have detailed control over the solution process. PETSc includes a large suite of parallel linear, nonlinear equation solvers and ODE integrators that are easily used in application codes written in C, C++, Fortran and now Python. PETSc provides many of the mechanisms needed within parallel application codes, such as simple parallel matrix and vector assembly routines that allow the overlap of communication and computation. In addition, PETSc includes support for parallel distributed arrays useful for finite difference methods. 
+
+Official website: \url{https://www.mcs.anl.gov/petsc/}
+
+PETSC search directories:
+\begin{evb}
+/usr/local/petsc-seq
+/usr/local/petsc*-seq/
+/opt/petsc-seq/
+/opt/petsc*-seq/
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+
+\subsection{ITSOL}
+TSOL is a library of iterative solvers for general sparse linear systems of equations. ITSOL can be viewed as an extension of the itsol module in SPARSKIT. It is written in C and offers a selection of recently developed preconditioners. The preconditioner suite includes: ILUK, ILUT, ILUC, VBILUK, VBILUT, and ARMS. 
+
+Official website: \url{http://www-users.cs.umn.edu/~saad/software/ITSOL/index.html}
+
+ITSOL search directories:
+\begin{evb}
+/usr/local/itsol
+/usr/local/itsol*
+/usr/local
+/usr
+/opt/itsol 
+/opt/itsol*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{LIS}
+Lis (Library of Iterative Solvers for linear systems, pronounced [lis]) is a parallel software library for solving linear equations and eigenvalue problems that arise in the numerical solution of partial differential equations using iterative methods.
+
+Official website: \url{http://www.ssisc.org/lis/}
+
+LIS search directories:
+\begin{evb}
+/usr/local/lis
+/usr/local/lis*
+/usr/local
+/usr
+/opt/lis 
+/opt/lis*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{QR\_MUMPS}
+QR\_MUMPS is a software package for the solution of sparse, linear systems on multicore computers. It implements a direct solution method based on the QR factorization of the input matrix. Therefore, it is suited to solving sparse least-squares problems and to computing the minimum-norm solution of sparse, underdetermined problems. It can obviously be used for solving square problems in which case the stability provided by the use of orthogonal transformations comes at the cost of a higher operation count with respect to solvers based on, e.g., the LU factorization. It supports real and complex, single or double precision arithmetic. 
+
+Official website: \url{http://buttari.perso.enseeiht.fr/qr_mumps/}
+
+QR\_MUMPS search directories:
+\begin{evb}
+/usr/local/qr_mumps
+/usr/local/qr_mumps*
+/usr/local
+/usr
+/opt/qr_mumps 
+/opt/qr_mumps*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+
+\subsection{FASP}
+FASP team plans to construct a pool of discrete problems arising from partial differential equations (PDEs) or PDE systems and efficient linear solvers for these problems. They mainly utilize the methodology of Auxiliary Space Preconditioning (ASP) to construct efficient linear solvers. A set of Krylov solvers and AMG solvers have been implemented. 
+
+Official website: \url{http://fasp.sourceforge.net/}
+
+FASP search directories:
+\begin{evb}
+/usr/local/fasp
+/usr/local/fasp*
+/usr/local
+/usr
+/opt/fasp 
+/opt/fasp*
+\end{evb}
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{SUPERLU}
+SuperLU is a general purpose library for the direct solution of large, sparse, nonsymmetric systems of linear equations on high performance machines. The library is written in C and is callable from either C or Fortran. The library routines will perform an LU decomposition with partial pivoting and triangular system solves through forward and back substitution. The LU factorization routines can handle non-square matrices but the triangular solves are performed only for square matrices.
+
+Official website: \url{http://crd-legacy.lbl.gov/~xiaoye/SuperLU/}
+
+SUPERLU search directories:
+\begin{evb}
+/usr/local/superlu
+/usr/local/superlu*
+/usr/local
+/usr
+/opt/superlu 
+/opt/superlu*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories with options.
+
+\subsection{PARDISO}
+The package PARDISO is a thread-safe, high-performance, robust, memory efficient and easy to use software for solving large sparse symmetric and unsymmetric linear systems of equations on shared-memory and distributed-memory multiprocessors. 
+
+Official website: \url{http://www.pardiso-project.org/}
+
+PARDISO search directories:
+\begin{evb}
+/usr/local/intel
+/opt/intel
+
+/usr/local/pardiso
+/usr/local/pardiso*
+/usr/local/lib
+/usr/local/lib64 
+/usr/lib
+/usr/lib64
+/opt/pardiso
+/opt/pardiso*
+\end{evb}
+
+\subsection{HSL MI20 (AMG)}
+An AMG package using classical method. 
+
+Official website: \url{http://www.hsl.rl.ac.uk/catalogue/hsl_mi20.html}
+
+HSL MI20 search directories:
+\begin{evb}
+/usr/local/hsl_mi20
+/usr/local/hsl_mi20*
+/opt/hsl_mi20
+/opt/hsl_mi20*
+\end{evb}
+
+\subsection{SXAMG}
+An AMG package using classical method. 
+
+Official website: \url{https://github.com/exasc/sxamg/}
+
+SXAMG search directories:
+\begin{evb}
+/usr/local/sxamg
+/usr/local/sxamg*
+/opt/sxamg
+/opt/sxamg*
+\end{evb}
+
+The include and lib directories are sub-directories of above directories. Users can also set customized directories using options.
+

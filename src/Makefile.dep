@@ -1,0 +1,95 @@
+ 
+
+lssp.o: lssp.cxx ../include/config.h ../include/lssp.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-amg.h ../include/pc-arms.h ../include/pc-biluk.h ../include/pc-bilut.h ../include/pc.h ../include/pc-iluk.h ../include/pc-ilut.h ../include/pc-mi20.h ../include/pc-vbiluk.h ../include/pc-vbilut.h ../include/pc-sxamg.h ../include/solver-amg.h ../include/solver-bicgsafe.h ../include/solver-bicgstab.h ../include/solver-bicgstabl.h ../include/solver-bicrsafe.h ../include/solver-bicrstab.h ../include/solver-cg.h ../include/solver-cgs.h ../include/solver-cr.h ../include/solver-crs.h ../include/solver-fasp.h ../include/solver-gmres.h ../include/solver-gpbicg.h ../include/solver-gpbicr.h ../include/solver-idrs.h ../include/solver-klu.h ../include/solver-laspack.h ../include/solver-lgmres.h ../include/solver-lis.h ../include/solver-mi20.h ../include/solver-mumps.h ../include/solver-orthomin.h ../include/solver-pardiso.h ../include/solver-petsc.h ../include/solver-qmrcgstab.h ../include/solver-qrmumps.h ../include/solver-superlu.h ../include/solver-tfqmr.h ../include/solver-tri.h ../include/solver-umfpack.h ../include/solver-sxamg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+matrix-utils.o: matrix-utils.cxx ../include/config.h ../include/matrix-utils.h ../include/type-defs.h ../include/utils.h
+
+mvops.o: mvops.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-amg.o: pc-amg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-amg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-arms.o: pc-arms.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-arms.h ../include/pc-bilut.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-biluk.o: pc-biluk.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-biluk.h ../include/pc-iluk.h ../include/solver-tri.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-bilut.o: pc-bilut.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-bilut.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc.o: pc.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-amg.h ../include/pc-arms.h ../include/pc-biluk.h ../include/pc-bilut.h ../include/pc.h ../include/pc-iluk.h ../include/pc-ilut.h ../include/pc-mi20.h ../include/pc-vbiluk.h ../include/pc-vbilut.h ../include/pc-sxamg.h ../include/solver-tri.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-iluk.o: pc-iluk.cxx ../include/config.h ../include/matrix-utils.h ../include/pc-iluk.h ../include/solver-tri.h ../include/type-defs.h ../include/utils.h
+
+pc-ilut.o: pc-ilut.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-iluk.h ../include/pc-ilut.h ../include/solver-tri.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-mi20.o: pc-mi20.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-mi20.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-vbiluk.o: pc-vbiluk.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-bilut.h ../include/pc-vbiluk.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-vbilut.o: pc-vbilut.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-bilut.h ../include/pc-vbilut.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+pc-sxamg.o: pc-sxamg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/pc-sxamg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-amg.o: solver-amg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-amg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-bicgsafe.o: solver-bicgsafe.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-bicgsafe.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-bicgstab.o: solver-bicgstab.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-bicgstab.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-bicgstabl.o: solver-bicgstabl.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-bicgstabl.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-bicrsafe.o: solver-bicrsafe.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-bicrsafe.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-bicrstab.o: solver-bicrstab.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-bicrstab.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-cg.o: solver-cg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-cg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-cgs.o: solver-cgs.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-cgs.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-cr.o: solver-cr.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-cr.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-crs.o: solver-crs.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-crs.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-fasp.o: solver-fasp.cxx ../include/config.h ../include/solver-fasp.h ../include/type-defs.h ../include/utils.h
+
+solver-gmres.o: solver-gmres.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-gmres.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-gpbicg.o: solver-gpbicg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-gpbicg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-gpbicr.o: solver-gpbicr.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-gpbicr.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-idrs.o: solver-idrs.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-idrs.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-klu.o: solver-klu.cxx ../include/config.h ../include/matrix-utils.h ../include/solver-klu.h ../include/type-defs.h ../include/utils.h
+
+solver-laspack.o: solver-laspack.cxx ../include/config.h ../include/solver-laspack.h ../include/type-defs.h ../include/utils.h
+
+solver-lgmres.o: solver-lgmres.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-lgmres.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-lis.o: solver-lis.cxx ../include/config.h ../include/solver-lis.h ../include/type-defs.h ../include/utils.h
+
+solver-mi20.o: solver-mi20.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-mi20.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-mumps.o: solver-mumps.cxx ../include/config.h ../include/solver-mumps.h ../include/type-defs.h ../include/utils.h
+
+solver-orthomin.o: solver-orthomin.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-orthomin.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-pardiso.o: solver-pardiso.cxx ../include/config.h ../include/solver-pardiso.h ../include/type-defs.h ../include/utils.h
+
+solver-petsc.o: solver-petsc.cxx ../include/config.h ../include/solver-petsc.h ../include/type-defs.h ../include/utils.h
+
+solver-qmrcgstab.o: solver-qmrcgstab.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-qmrcgstab.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-qrmumps.o: solver-qrmumps.cxx ../include/config.h ../include/solver-qrmumps.h ../include/type-defs.h ../include/utils.h
+
+solver-superlu.o: solver-superlu.cxx ../include/config.h ../include/solver-superlu.h ../include/type-defs.h ../include/utils.h
+
+solver-tfqmr.o: solver-tfqmr.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-tfqmr.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+solver-tri.o: solver-tri.cxx ../include/config.h ../include/matrix-utils.h ../include/solver-tri.h ../include/type-defs.h ../include/utils.h
+
+solver-umfpack.o: solver-umfpack.cxx ../include/config.h ../include/solver-umfpack.h ../include/type-defs.h ../include/utils.h
+
+solver-sxamg.o: solver-sxamg.cxx ../include/config.h ../include/matrix-utils.h ../include/mvops.h ../include/solver-sxamg.h ../include/type-defs.h ../include/utils.h ../include/vector.h
+
+utils.o: utils.cxx ../include/config.h ../include/utils.h
+
+vector.o: vector.cxx ../include/config.h ../include/matrix-utils.h ../include/type-defs.h ../include/utils.h ../include/vector.h

@@ -1,0 +1,406 @@
+\chapter{Linear Solvers and Preconditioners}
+
+\section{Solver Types}
+The solver type is defined as \verb|LSSP_SOLVER_TYPE|,
+
+\begin{evb}
+/* solver type */
+typedef enum LSSP_SOLVER_TYPE_
+{
+    LSSP_SOLVER_GMRES,     /* gmres(m) */
+    LSSP_SOLVER_LGMRES,    /* lgmres(m, k) */
+    LSSP_SOLVER_BICGSTAB,  /* bicgstab */
+    LSSP_SOLVER_BICGSTABL, /* bicgstab(l) */
+    LSSP_SOLVER_BICGSAFE,  /* bicgsafe */
+    LSSP_SOLVER_CG,        /* cg */
+    LSSP_SOLVER_CGS,       /* cgs */
+    LSSP_SOLVER_GPBICG,    /* gpbicg */
+    LSSP_SOLVER_CR,        /* cr */
+    LSSP_SOLVER_CRS,       /* crs */
+    LSSP_SOLVER_BICRSTAB,  /* bicrstab */
+    LSSP_SOLVER_BICRSAFE,  /* bicrsafe */
+    LSSP_SOLVER_GPBICR,    /* gpbicr */
+    LSSP_SOLVER_QMRCGSTAB, /* qmrcgstab */
+    LSSP_SOLVER_TFQMR,     /* tfqmr */
+    LSSP_SOLVER_ORTHOMIN,  /* orthomin */
+    LSSP_SOLVER_IDRS,      /* idrs */
+
+#if USE_LASPACK
+    LSSP_SOLVER_LASPACK,   /* laspack */
+#endif
+
+#if USE_SSPARSE
+    LSSP_SOLVER_UMFPACK,   /* ssparse, umf */
+    LSSP_SOLVER_KLU,       /* ssparse, klu */
+#endif
+
+#if USE_MUMPS
+    LSSP_SOLVER_MUMPS,     /* mumps */
+#endif
+
+#if USE_PETSC
+    LSSP_SOLVER_PETSC,     /* petsc */
+#endif
+
+#if USE_LIS
+    LSSP_SOLVER_LIS,       /* lis */
+#endif
+
+#if USE_QR_MUMPS
+    LSSP_SOLVER_QR_MUMPS,  /* qr-mumps */
+#endif
+
+#if USE_FASP
+    LSSP_SOLVER_FASP,      /* FASP */
+    LSSP_SOLVER_AMG,       /* amg from FASP */
+    LSSP_SOLVER_FMG,       /* fmg from FASP */
+#endif
+
+#if USE_SUPERLU
+    LSSP_SOLVER_SUPERLU,   /* superlu */
+#endif
+
+#if USE_PARDISO
+    LSSP_SOLVER_PARDISO,   /* pardiso */
+#endif
+
+#if USE_HSL_MI20
+    LSSP_SOLVER_MI20AMG,   /* MI20 AMG */
+#endif
+
+#if USE_SXAMG
+    LSSP_SOLVER_SXAMG,     /* SXAMG */
+#endif
+
+} LSSP_SOLVER_TYPE;
+\end{evb}
+
+LSSP implements many solvers,
+     including \verb|GMRES|, \verb|LGMRES|, \verb|BICGSTAB|, \verb|BICGSTABL|, \verb|BICGSAFE|,
+     \verb|CG|, \verb|CGS|, \verb|GPBICG|, \verb|CR|, \verb|CRS|, \verb|BICRSTAB|,
+     \verb|BICRSAFE|, \verb|GPBICR|, \verb|QMRCGSTAB|, \verb|TFQMR|, \verb|ORTHOMIN|, and \verb|IDRS|.
+
+LSSP also implements interfaces to other famous linear solver packages, such as
+\verb|LASPACK|, \verb|SSPARSE|, \verb|MUMPS|, \verb|PETSC|, \verb|LIS|, \verb|QR_MUMPS|,
+\verb|FASP|, \verb|SUPERLU|, \verb|PARDISO|, \verb|HSL_MI20| and \verb|SXAMG|.
+
+\section{Preconditioner Types}
+\begin{evb}
+typedef enum LSSP_PC_TYPE_
+{
+    LSSP_PC_NON,
+    LSSP_PC_ILUK,               /* ILUK */
+    LSSP_PC_ILUT,               /* ILUT */
+
+#if USE_BLAS
+#if USE_LAPACK
+    LSSP_PC_BILUK,              /* block-wise ILUK */
+#endif
+#endif
+
+#if USE_ITSOL
+    LSSP_PC_BILUT,              /* block-wise ILUT */
+    LSSP_PC_VBILUT,             /* var block-wise ILUT */
+    LSSP_PC_VBILUK,             /* var block-wise ILUK */
+    LSSP_PC_ARMS,               /* multi-level */
+#endif
+
+#if USE_FASP
+    LSSP_PC_AMG,                /* AMG from FASP */
+    LSSP_PC_FMG,                /* FMG from FASP */
+#endif
+
+#if USE_HSL_MI20
+    LSSP_PC_MI20AMG,            /* AMG from HSL MI20 */
+#endif
+
+#if USE_SXAMG
+    LSSP_PC_SXAMG,              /* AMG from SXAMG */
+#endif
+
+    LSSP_PC_USER,               /* user defined */
+
+} LSSP_PC_TYPE;
+
+\end{evb}
+
+There are some internal preconditioners, including \verb|NON| (no preconditioner),
+\verb|ILUK| (point-wise ILU(k)), \verb|ILUT| (point-wise ILUT(p, tol)),
+and \verb|BILUK| (block-wise ILU(k)). However, \verb|BILUK| requires \verb|BLAS| and \verb|LAPACK|.
+Users can set their own preconditioner if preconditioner type is set to \verb|LSSP_PC_USER|.
+In this case, user should provide three functions, whose types are defined as
+\verb|LSSP_PC_ASSEMBLE|, \verb|LSSP_PC_SOLVE| and \verb|LSSP_PC_DESTROY|.
+
+LSSP also provides some external preconditioners, which are \verb|BILUT| (block-wise ILUT(p, tol)),
+\verb|VBILUT| (variable block-wise ILUT(p, tol)),
+\verb|VBILUK| (variable block-wise ILU(k))and 
+\verb|ARMS| (multi-level method) from package \verb|ITSOL|, \verb|AMG| (algebraic multi-grid method) 
+and \verb|FMG| (full multi-grid method) from 
+package \verb|FASP|, and \verb|MI20AMG| (MI20 AMG) from package \verb|HSL MI20|.
+
+\section{Solver and Preconditioner Management}
+
+\begin{figure}[!htb]
+\begin{evb}
+{
+    lssp_mat_csr A;
+    LSSP_SOLVER solver;
+    LSSP_PC pc;
+    lssp_vec x;
+    lssp_vec b;
+
+    /* 1: setup A, x, b */
+    x = lssp_vec_create(n);
+    b = lssp_vec_create(n);
+
+    A = lssp_mat_create(int nrows, int ncols, int *Ap, int *Aj, double *Ax);
+    for (i = 0; i < n; i++) {
+        lssp_vec_set_value_by_index(x, i, double val);
+        lssp_vec_set_value_by_index(b, i, double val);
+    }
+
+    /* 2: create solver and pc */
+    lssp_solver_create(solver, LSSP_SOLVER_BICGSTAB, pc, LSSP_PC_ILUK);
+
+    /* 3: settings */
+    lssp_solver_set_restart(solver, m);
+    lssp_solver_set_maxit(solver, itr_max);
+
+    /* 4: assemble solver and preconditioner */
+    lssp_solver_assemble(solver, A, x, b, pc);
+
+    /* 5: solve */
+    lssp_solver_solve(solver, pc);
+
+    /* 6: get value */
+    for (i = 0; i < n; i++) {
+        value = lssp_vec_get_value_by_index(x, i);
+    }
+
+    /* 7: destroy pc and sover */
+    lssp_solver_destroy(solver, pc);
+    lssp_mat_destroy(A);
+    lssp_vec_destroy(x);
+    lssp_vec_destroy(b);
+}
+\end{evb}
+    \caption{Solution process}
+    \label{solution-proc}
+\end{figure}
+
+Figure \ref{solution-proc} shows solution process, which includes the following steps:
+\begin{enumerate}
+    \item setup matrix, unknown vector and right hand side vector, and initialize values;
+    \item create solver and preconditioner;
+    \item set solver and preconditioner parameters;
+    \item assemble solver and preconditioner;
+    \item solve the linear system;
+    \item get values and return to caller;
+    \item destroy solver, preconditioner, matrix and vectors;
+\end{enumerate}
+
+\subsection{Create}
+\vb{lssp_solver_create} creates solver object and preconditioner object using solver
+type and preconditioner type.
+\begin{evb}
+void lssp_solver_create(LSSP_SOLVER &s, LSSP_SOLVER_TYPE s_type, LSSP_PC &pc,\
+    LSSP_PC_TYPE p_type);
+\end{evb}
+
+\subsection{Assemble}
+\vb{lssp_solver_assemble} assembles solver object and preconditioner object.
+\begin{evb}
+void lssp_solver_assemble(LSSP_SOLVER &s, lssp_mat_csr &Ax, lssp_vec x, \
+    lssp_vec b, LSSP_PC &pc);
+\end{evb}
+
+\subsection{Solve}
+\vb{lssp_solver_solve} solves linear system.
+\begin{evb}
+int lssp_solver_solve(LSSP_SOLVER &solver, LSSP_PC &pc);
+\end{evb}
+
+\subsection{Destroy}
+\vb{lssp_solver_destroy} destroys solver and preconditioner objects and releases internal
+memory.
+\begin{evb}
+void lssp_solver_destroy(LSSP_SOLVER &s, LSSP_PC &pc);
+\end{evb}
+
+\section{Solver Settings}
+
+\subsection{General Settings}
+\vb{lssp_solver_reset_rhs} rests right-hand side.
+\begin{evb}
+void lssp_solver_reset_rhs(LSSP_SOLVER &s, lssp_vec rhs);
+\end{evb}
+
+\vb{lssp_solver_reset_unknown} resets initial guess and solution vector.
+\begin{evb}
+void lssp_solver_reset_unknown(LSSP_SOLVER &s, lssp_vec x);
+\end{evb}
+
+\vb{lssp_solver_reset_type} resets solver type.
+\begin{evb}
+void lssp_solver_reset_type(LSSP_SOLVER &s, LSSP_SOLVER_TYPE type);
+\end{evb}
+
+\vb{lssp_solver_set_rtol} sets relative tolerence.
+\begin{evb}
+void lssp_solver_set_rtol(LSSP_SOLVER &s, double tol);
+\end{evb}
+
+\vb{lssp_solver_set_atol} sets absolute tolerence.
+\begin{evb}
+void lssp_solver_set_atol(LSSP_SOLVER &s, double tol);
+\end{evb}
+
+\vb{lssp_solver_set_rbtol} sets relative b norm tolerence.
+\begin{evb}
+void lssp_solver_set_rbtol(LSSP_SOLVER &s, double tol);
+\end{evb}
+
+\begin{evb}
+/* set maximal number of iteration */
+void lssp_solver_set_maxit(LSSP_SOLVER &s, int maxit);
+\end{evb}
+
+\vb{lssp_solver_set_restart} set the number of restart.
+\begin{evb}
+void lssp_solver_set_restart(LSSP_SOLVER &s, int m);
+\end{evb}
+
+\vb{lssp_solver_set_augk} sets aug\_k for LGMRES(m).
+\begin{evb}
+void lssp_solver_set_augk(LSSP_SOLVER &s, int k);
+\end{evb}
+
+\vb{lssp_solver_set_bgsl} set bgsl for BICGSTAB(l).
+\begin{evb}
+void lssp_solver_set_bgsl(LSSP_SOLVER &s, int k);
+\end{evb}
+
+\vb{lssp_solver_set_idrs} sets idrs for IDRS solver.
+\begin{evb}
+void lssp_solver_set_idrs(LSSP_SOLVER &s, int k);
+\end{evb}
+
+\vb{lssp_solver_reset_verbosity} resets verbosity of a solver.
+\begin{evb}
+void lssp_solver_reset_verbosity(LSSP_SOLVER &s, int v);
+\end{evb}
+
+\vb{lssp_solver_get_residual} gets residual.
+\begin{evb}
+double lssp_solver_get_residual(LSSP_SOLVER s);
+\end{evb}
+
+\vb{lssp_solver_get_nits} gets number of iteration.
+\begin{evb}
+int lssp_solver_get_nits(LSSP_SOLVER s);
+\end{evb}
+
+\vb{lssp_solver_set_log} sets log file handler.
+\begin{evb}
+void lssp_solver_set_log(LSSP_SOLVER &s, FILE *io);
+\end{evb}
+
+\subsection{AMG Solver Setting}
+\vb{lssp_solver_amg_reset_pars} sets new parameters to AMG solver.
+\begin{evb}
+void lssp_solver_amg_reset_pars(LSSP_SOLVER &s, AMG_param par);
+\end{evb}
+
+\subsection{FASP Solver Setting}
+\vb{lssp_fasp_set_pars} resets default parameters. If parameter pointer is not \vb{NULL},
+default parameters will be overriden.
+\begin{evb}
+void lssp_fasp_set_pars(LSSP_SOLVER *solver, input_param *inparam,
+    itsolver_param *itsparam, AMG_param *amgparam, ILU_param *iluparam,
+    Schwarz_param *schparam);
+\end{evb}
+
+\subsection{LIS Solver Setting}
+\vb{lssp_solver_lis_set_pars} sets solver id and preconditioner id.
+\begin{evb}
+static const char * lis_solver[] = {
+    "-i bicgstab",
+    "-i bicgstabl",
+    "-i cg",
+    "-i cgs",
+    "-i bicg",
+    "-i bicgsafe",
+    "-i bicr",
+    "-i cr",
+    "-i bicrstab",
+    "-i bicrsafe",
+    "-i idrs",
+    "-i crs",
+    "-i gpbicr",
+    "-i gpbicg",
+    "-i tfqmr",
+    "-i orthomin",
+    "-i gmres",
+    "-i fgmres",
+    "-i minres",
+};
+
+static const char * lis_pc[] = {
+    "-p none",
+    "-p ilut",
+    "-p ilu -ilu_fill 1",
+    "-p is",
+    "-p sainv",
+    "-p saamg -saamg_unsym -saamg_theta 0.5",
+    "-p hybrid",
+    "-p iluc",
+    "-p ssor",
+    "-p jacobi",
+};
+
+void lssp_solver_lis_set_pars(LSSP_SOLVER &solver, unsigned int solver_id,
+    unsigned int pc_id);
+\end{evb}
+
+\subsection{SXAMG Setting}
+\vb{lssp_solver_sxamg_set_pars} resets default parameters.
+\begin{evb}
+void lssp_solver_sxamg_set_pars(LSSP_SOLVER *solver, SX_AMG_PARS *pars);
+\end{evb}
+
+\subsection{PETSc Setting}
+\vb{lssp_solver_petsc_setting} resets PETSc default parameters by a function.
+\begin{evb}
+typedef void (*solver_petsc_setting)(void *ksp, void *pc);
+
+void lssp_solver_petsc_setting(solver_petsc_setting func);
+\end{evb}
+
+\section{Preconditioner Settings}
+
+\subsection{ILUK Setting}
+
+\vb{lssp_pc_iluk_set_level} sets ILUK level.
+\begin{evb}
+void lssp_pc_iluk_set_level(LSSP_PC &pc, int level);
+\end{evb}
+
+\subsection{ILUT Setting}
+\vb{lssp_pc_ilut_set_drop_tol} and \vb{lssp_pc_ilut_set_p} sets \vb{tol} and \vb{p}
+parameters of ILUT(tol, p), which overrides default parameters.
+\begin{evb}
+void lssp_pc_ilut_set_drop_tol(LSSP_PC &pc, double tol);
+void lssp_pc_ilut_set_p(LSSP_PC &pc, int p);
+\end{evb}
+
+\subsection{AMG Setting}
+\vb{lssp_pc_amg_set_pars} sets new parameters, which overrides default settings.
+\begin{evb}
+void lssp_pc_amg_set_pars(LSSP_PC &pc, AMG_param *amgparam);
+\end{evb}
+
+\subsection{SXAMG Setting}
+\vb{lssp_pc_sxamg_set_pars} sets new parameters, which overrides default parameters.
+\begin{evb}
+void lssp_pc_sxamg_set_pars(LSSP_PC &pc, SX_AMG_PARS *pars);
+\end{evb}

@@ -1,0 +1,52 @@
+\chapter{Utilities}
+
+\section{Print}
+
+\vb{lssp_set_log} sets log file handler.
+\begin{evb}
+void lssp_set_log(FILE *io);
+\end{evb}
+
+\vb{lssp_printf} outputs to stdout and default log file if set.
+\begin{evb}
+int lssp_printf(const char *fmt, ...);
+\end{evb}
+
+\vb{lssp_error} prints output error message and quits with error code.
+\begin{evb}
+void lssp_error(int code, const char *fmt, ...);
+\end{evb}
+
+\vb{lssp_warning} print warning info.
+\begin{evb}
+void lssp_warning(const char *fmt, ...);
+\end{evb}
+
+\section{Memory}
+The following functions provide memory allocation, calloc, reallocation, freeing and copying.
+\begin{evb}
+template <typename T> T * lssp_malloc(const int n);
+
+template <typename T> T * lssp_calloc(const int n);
+
+template <typename T> T * lssp_realloc(T * old, const int n);
+
+template <typename T> void lssp_free(T * &p);
+
+template<typename T> void lssp_memcpy_on(T *dst, const T *src, const int n);
+
+template <typename T> T * lssp_copy_on(const T *src, const int n);
+\end{evb}
+
+\section{Performance}
+
+\vb{lssp_get_time} gets current time.
+\begin{evb}
+double lssp_get_time();
+\end{evb}
+
+\vb{lssp_get_mem_usage} returns current memory usage. If \vb{peak} is not \vb{NULL},
+then peak memory is returned to \vb{peak}.
+\begin{evb}
+double lssp_get_mem_usage(double *peak);
+\end{evb}

@@ -1,0 +1,263 @@
+
+\chapter{Matrix and Vector}
+
+\section{Matrix Definition}
+
+LSSP uses \verb|int| for integer and \verb|double| for floating-point number.
+In this library, matrix indices and array indices follow C style, which start from 0.
+Three matrix types are defined, include \verb|lssp_mat_csr|, \verb|lssp_mat_coo|,
+     and \verb|lssp_mat_bcsr|, which are CSR matrix, COO matrix and block-wise
+     CSR matrix. They are defined as,
+
+\begin{evb}
+typedef struct lssp_mat_csr_
+{
+    int num_rows;
+    int num_cols;
+    int num_nnzs;
+    int *Ap;
+    int *Aj;
+    double *Ax;
+
+} lssp_mat_csr;
+\end{evb}
+
+\begin{evb}
+typedef struct lssp_mat_coo_
+{
+    int num_rows;
+    int num_cols;
+    int num_nnzs;
+    int *Ai;
+    int *Aj;
+    double *Ax;
+
+} lssp_mat_coo;
+\end{evb}
+
+\begin{evb}
+typedef struct lssp_mat_bcsr_
+{
+    int num_rows;
+    int num_cols;
+    int num_nnzs;
+    int blk_size;
+    int *Ap;
+    int *Aj;
+    double *Ax;
+
+} lssp_mat_bcsr;
+\end{evb}
+
+The definitions of \verb|lssp_mat_csr| and \verb|lssp_mat_coo| are the same as standard 
+definitions. For \verb|lssp_mat_bcsr|, each block has the same size, which is defined by
+\verb|blk_size|. It uses column-major style as \verb|Fortran|.
+
+
+\section{Matrix Management}
+
+\subsection{Initialize}
+\index{Matrix Init}
+
+\vb{lssp_mat_init} initializes a matrix, which set row, column and non-zero to zero and 
+set arrays to \verb|NULL|.
+
+\begin{evb}
+void lssp_mat_init(lssp_mat_csr &A);
+\end{evb}
+
+\begin{evb}
+void lssp_mat_init(lssp_mat_coo &A);
+\end{evb}
+
+\begin{evb}
+void lssp_mat_init(lssp_mat_bcsr &A);
+\end{evb}
+
+\subsection{Create}
+\vb{lssp_mat_create} creates a CSR matrix.
+\begin{evb}
+lssp_mat_csr lssp_mat_create(int nrows, int ncols, int *Ap, int *Aj, double *Ax);
+\end{evb}
+
+\subsection{Destroy}
+
+\vb{lssp_mat_destroy} destroys a matrix object and releases memory.
+\begin{evb}
+void lssp_mat_destroy(lssp_mat_csr &csr);
+\end{evb}
+
+\begin{evb}
+void lssp_mat_destroy(lssp_mat_coo &coo);
+\end{evb}
+
+\begin{evb}
+void lssp_mat_destroy(lssp_mat_bcsr &csr);
+\end{evb}
+
+\subsection{Conversion}
+\vb{lssp_mat_csr_to_bcsr} converts a CSR matrix to block CSR matrix.
+\begin{evb}
+lssp_mat_bcsr lssp_mat_csr_to_bcsr(const lssp_mat_csr A, int bs);
+\end{evb}
+
+\vb{lssp_mat_bcsr_to_csr} converts a block CSR matrix to a CSR matrix.
+\begin{evb}
+lssp_mat_csr lssp_mat_bcsr_to_csr(const lssp_mat_bcsr A);  
+\end{evb}
+
+\vb{lssp_mat_csr_to_coo} converts a CSR matrix to a COO matrix.
+\begin{evb}
+lssp_mat_coo lssp_mat_csr_to_coo(const lssp_mat_csr A);
+\end{evb}
+
+\vb{lssp_mat_coo_to_csr} converts a COO matrix to CSR matrix.
+\begin{evb}
+lssp_mat_csr lssp_mat_coo_to_csr(const lssp_mat_coo coo);
+\end{evb}
+
+\vb{lssp_mat_transpose}: CSR matrix transpose.
+\begin{evb}
+lssp_mat_csr lssp_mat_transpose(const lssp_mat_csr A);
+\end{evb}
+
+\subsection{Sort}
+
+\vb{lssp_mat_sort_column} sorts a CSR matrix in ascending order.
+\begin{evb}
+void lssp_mat_sort_column(lssp_mat_csr &A);
+\end{evb}
+
+\vb{lssp_mat_csr_is_sorted} checks if a CSR matrix is sorted.
+\begin{evb}
+bool lssp_mat_csr_is_sorted(const lssp_mat_csr A);
+\end{evb}
+
+\vb{lssp_mat_bcsr_is_sorted} checks if a block CSR matrix is sorted.
+\begin{evb}
+bool lssp_mat_bcsr_is_sorted(const lssp_mat_bcsr A);
+\end{evb}
+
+\vb{lssp_mat_adjust_zero_diag} changes zero diagonal element to some small value.
+\begin{evb}
+lssp_mat_csr lssp_mat_adjust_zero_diag(const lssp_mat_csr A, double tol);
+\end{evb}
+
+\section{Vector Definition}
+
+\begin{evb}
+typedef struct lssp_vec_
+{
+    int n;
+    double *d;
+
+} lssp_vec;
+\end{evb}
+
+\vb{lssp_vec} has two members, which are vector length (\vb{n}) and data (memory,
+\vb{d}).
+
+\section{Vector Management}
+
+\subsection{Create}
+\vb{lssp_vec_create} creates a length \vb{n} floating-point vector.
+\begin{evb}
+lssp_vec lssp_vec_create(int n);
+\end{evb}
+
+\subsection{Destroy}
+
+\vb{lssp_vec_destroy} destroys a vector.
+\begin{evb}
+void lssp_vec_destroy(lssp_vec &v);
+\end{evb}
+
+\subsection{Set Value}
+\vb{lssp_vec_set_value}, \vb{lssp_vec_set_value_by_array} and \vb{lssp_vec_set_value_by_index}
+set vector values.
+
+\vb{lssp_vec_set_value} sets the vector to the same value.
+\begin{evb}
+void lssp_vec_set_value(lssp_vec x, double val);
+\end{evb}
+
+
+\vb{lssp_vec_set_value_by_array} sets vector value by a buffer, which has the same length as
+vector.
+\begin{evb}
+void lssp_vec_set_value_by_array(lssp_vec x, double *val);
+\end{evb}
+
+\vb{lssp_vec_set_value_by_index} sets value to the $i$-th component.
+\begin{evb}
+void lssp_vec_set_value_by_index(lssp_vec x, int i, double val);
+\end{evb}
+
+\subsection{Get Value}
+\vb{lssp_vec_get_value} copies vector's values to a buffer, which should have the same length as
+the vector.
+\begin{evb}
+void lssp_vec_get_value(double *val, lssp_vec x);
+\end{evb}
+
+\vb{lssp_vec_get_value_by_index} gets the value of the $i$-th component.
+\begin{evb}
+double lssp_vec_get_value_by_index(lssp_vec x, int i);
+\end{evb}
+
+\subsection{Copy}
+\vb{lssp_vec_copy} copies data from source to destination.
+\begin{evb}
+void lssp_vec_copy(lssp_vec des, const lssp_vec src);
+\end{evb}
+
+\section{BLAS 1}
+\vb{lssp_vec_axpby} computes: $y = \beta * y + \alpha * x$.
+\begin{evb}
+void lssp_vec_axpby(double alpha, const lssp_vec x, double beta, lssp_vec y);
+\end{evb}
+
+\vb{lssp_vec_axpbyz} computes: $z = \beta * y + \alpha * x$.
+\begin{evb}
+void lssp_vec_axpbyz(double alpha, const lssp_vec x, double beta,
+    lssp_vec y, lssp_vec z);
+\end{evb}
+
+\vb{lssp_vec_dot} computes dot product.
+\begin{evb}
+double lssp_vec_dot(const lssp_vec x, const lssp_vec y);
+\end{evb}
+
+\vb{lssp_vec_norm} computes L2 norm.
+\begin{evb}
+double lssp_vec_norm(const lssp_vec x);
+\end{evb}
+
+\vb{lssp_vec_scale} scales a vector.
+\begin{evb}
+void lssp_vec_scale(lssp_vec x, double a);
+\end{evb}
+
+\section{BLAS 2}
+
+\vb{lssp_mv_amxpby} computes: $y = \beta * y + \alpha * A * x$.
+\begin{evb}
+void lssp_mv_amxpby(double alpha, const lssp_mat_csr A, const lssp_vec x, \
+    double beta, lssp_vec y);
+\end{evb}
+
+\vb{lssp_mv_amxpbyz} computes: $z = \beta * y + \alpha * A * x$.
+\begin{evb}
+void lssp_mv_amxpbyz(double alpha, const lssp_mat_csr A, const lssp_vec x, \
+    double beta, const lssp_vec y, lssp_vec z);
+\end{evb}
+
+\vb{lssp_mv_amxy} computes: $y = a * A * x$.
+\begin{evb}
+void lssp_mv_amxy(double a, const lssp_mat_csr A, const lssp_vec x, lssp_vec y);
+\end{evb}
+
+\vb{lssp_mv_mxy} computes: $y = A * x$.
+\begin{evb}
+void lssp_mv_mxy(const lssp_mat_csr A, const lssp_vec x,  lssp_vec y);
+\end{evb}
