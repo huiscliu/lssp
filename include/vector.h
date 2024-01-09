@@ -20,6 +20,9 @@ double lssp_vec_get_value_by_index(lssp_vec x, int i);
 /* copy */
 void lssp_vec_copy(lssp_vec des, const lssp_vec src);
 
+/* y = alpha * x */
+void lssp_vec_axy(double alpha, const lssp_vec x, lssp_vec y);
+
 /* y = beta * y + alpha * x */
 void lssp_vec_axpby(double alpha, const lssp_vec x, double beta, lssp_vec y);
 

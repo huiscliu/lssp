@@ -82,7 +82,19 @@ void lssp_vec_copy(lssp_vec x, const lssp_vec y)
     }
 }
 
-/* y = beta * y + alpha * x */
+/* y = alpha * x */
+void lssp_vec_axy(double alpha, const lssp_vec x, lssp_vec y)
+{
+    int i, n = x.n;
+
+    assert(x.n == y.n);
+
+    for (i = 0; i < n; i++) {
+        y.d[i] = x.d[i] * alpha;
+    }
+}
+
+/* y = alpha * x + beta * y */
 void lssp_vec_axpby(double alpha, const lssp_vec x, double beta, lssp_vec y)
 {
     int i, n = x.n;

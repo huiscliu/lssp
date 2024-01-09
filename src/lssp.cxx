@@ -2,7 +2,7 @@
 #include "lssp.h"
 
 /* constants */
-int LSSP_RESTART        = 30;
+int LSSP_RESTART        = 50;
 int LSSP_AUG_K          = 3;
 int LSSP_BGSL           = 4;
 int LSSP_IDRS           = 4;
@@ -262,6 +262,14 @@ int lssp_solver_solve(LSSP_SOLVER &solver, LSSP_PC &pc)
 
         case LSSP_SOLVER_LGMRES:
             it = lssp_solver_lgmres(solver, pc);
+            return it;
+
+        case LSSP_SOLVER_RGMRES:
+            it = lssp_solver_gmres_r(solver, pc);
+            return it;
+
+        case LSSP_SOLVER_RLGMRES:
+            it = lssp_solver_lgmres_r(solver, pc);
             return it;
 
         case LSSP_SOLVER_BICGSTAB:

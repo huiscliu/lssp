@@ -155,6 +155,8 @@ typedef enum LSSP_SOLVER_TYPE_
 {
     LSSP_SOLVER_GMRES,     /* gmres(m) */
     LSSP_SOLVER_LGMRES,    /* lgmres(m, k) */
+    LSSP_SOLVER_RGMRES,    /* right preconditioning gmres(m) */
+    LSSP_SOLVER_RLGMRES,   /* right preconditioning lgmres(m, k) */
     LSSP_SOLVER_BICGSTAB,  /* bicgstab */
     LSSP_SOLVER_BICGSTABL, /* bicgstab(l) */
     LSSP_SOLVER_BICGSAFE,  /* bicgsafe */

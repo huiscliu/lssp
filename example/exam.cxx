@@ -61,8 +61,8 @@ static lssp_mat_csr laplacian_5pt(const int N)
 int main()
 {
     int i, n;
-    int dim = 1000;
-    int m = 30;
+    int dim = 100;
+    int m = 60;
     int itr_max = 3000;
 
     lssp_mat_csr A;
@@ -95,7 +95,7 @@ int main()
     }
 
     /* set up solver and pc */
-    lssp_solver_create(solver, LSSP_SOLVER_BICGSTAB, pc, LSSP_PC_SXAMG);
+    lssp_solver_create(solver, LSSP_SOLVER_GMRES, pc, LSSP_PC_ILUK);
 
     /* settings */
     lssp_solver_set_restart(solver, m);
