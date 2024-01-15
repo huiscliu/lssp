@@ -3,27 +3,35 @@ CPPFLAGS        = @CPPFLAGS@
 
 CC              = @CC@
 CFLAGS          = @CFLAGS@
+BUILD_CFLAGS    = @BUILD_CFLAGS@
+USER_CFLAGS     =
 
 CXX             = @CXX@
 CXXFLAGS        = @CXXFLAGS@
+BUILD_CXXFLAGS  = @BUILD_CXXFLAGS@
+USER_CXXFLAGS   =
 
 FC              = @FC@
 FCFLAGS         = @FCFLAGS@
 FCLIBS          = @FCLIBS@
+USER_FCFLAGS    =
 
 LINKER          = @LINKER@
 LDFLAGS         = @LDFLAGS@
 LIBS            = @LIBS@
 
-AR              = @AR@
-RANLIB          = @RANLIB@
+AR                = @AR@
+RANLIB            = @RANLIB@
+BUILD_SHARED      = @BUILD_SHARED@
+BUILD_SHARED_LIBS = @BUILD_SHARED_LIBS@
+LIB_SUFFIX        = @LIB_SUFFIX@
 
-prefix		= @prefix@
-exec_prefix	= @exec_prefix@
-bindir		= @bindir@
-libdir		= @libdir@
-includedir	= @includedir@
-RPATH_FLAG	= @RPATH_FLAG@
+prefix        = @prefix@
+exec_prefix   = @exec_prefix@
+bindir        = @bindir@
+libdir        = @libdir@
+includedir    = @includedir@
+RPATH_FLAG    = @RPATH_FLAG@
 
 .c.o:
 	${CC} ${CFLAGS} ${CPPFLAGS} -c $*.c

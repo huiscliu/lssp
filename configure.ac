@@ -104,6 +104,63 @@ fi
 AC_SUBST(AR)
 AC_PROG_RANLIB
 
+#--------------------------------------- shared library
+
+AC_SUBST(LIB_SUFFIX, "")
+AC_SUBST(BUILD_SHARED, "")
+AC_SUBST(BUILD_SHARED_LIBS, "")
+AC_SUBST(BUILD_CFLAGS, "")
+AC_SUBST(BUILD_CXXFLAGS, "")
+dnl AC_SUBST(BUILD_FFLAGS, "")
+AC_ARG_ENABLE(shared,
+[  --enable-shared         build shared library liblssp.so (default)
+  --disable-shared        build static library liblssp.a
+  --with-build-shared     the BUILD_SHARED macro (default "gcc -shared" or "${CC} -shared")],,enable_shared="auto")
+
+if test "$enable_shared" = "auto"; then
+dnl    if test "$target_vendor" = "apple"; then
+dnl	# use static link by default on MacOS, before the rpath issue is solved
+dnl	enable_shared="no"
+dnl    else
+	enable_shared="yes"
+dnl    fi
+fi
+
+if test "$enable_shared" = "yes"; then
+    /bin/rm -f src/liblssp.a src/liblssp.dll
+    LIB_SUFFIX=".so"
+
+    if test -n "$with_build_shared"; then
+        BUILD_SHARED="$with_build_shared"
+    elif gcc -v >/dev/null 2>&1 && \
+         test "$cross_compiling" != "yes" && \
+         test "$target_vendor" != "apple" # MacOS: force using "${CC} -shared"
+    then
+        BUILD_SHARED="gcc -shared"
+    else
+        BUILD_SHARED="\${CC} -shared"
+    fi
+
+    # TODO: figure out a proper way to determine when to use the PIC flag
+    if test "$target_cpu" != "i686" -a "$target_cpu" != "i586" -a \
+            "$target_cpu" != "i486" -a "$target_cpu" != "i386"; then
+        BUILD_CFLAGS="-fPIC"
+        BUILD_CXXFLAGS="-fPIC"
+        dnl BUILD_FFLAGS="-fPIC"
+    fi
+
+    dnl TODO: check that the above settings work!
+    AC_MSG_NOTICE([*** building shared library liblssp$LIB_SUFFIX ("$BUILD_SHARED")])
+else
+    /bin/rm -f src/liblssp.so
+    LIB_SUFFIX=".a"
+    BUILD_SHARED=""
+    BUILD_CFLAGS=""
+    BUILD_CXXFLAGS=""
+    dnl BUILD_FFLAGS=""
+    AC_MSG_NOTICE([*** building static library liblssp$LIB_SUFFIX])
+fi
+
 #--------------------------------------- OpenMP
 #AC_LANG(C)
 #AC_SUBST(USE_OPENMP, "0")

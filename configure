@@ -649,6 +649,11 @@ ac_header_cxx_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 RPATH_FLAG
+BUILD_CXXFLAGS
+BUILD_CFLAGS
+BUILD_SHARED_LIBS
+BUILD_SHARED
+LIB_SUFFIX
 RANLIB
 AR
 LINKER
@@ -717,6 +722,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_shared
 enable_rpath
 enable_blas
 enable_lapack
@@ -1367,6 +1373,9 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-shared         build shared library liblssp.so (default)
+  --disable-shared        build static library liblssp.a
+  --with-build-shared     the BUILD_SHARED macro (default "gcc -shared" or "${CC} -shared")
   --enable-rpath          enable use of rpath (default)
   --disable-rpath         disable use of rpath
   --with-rpath-flag=FLAG  compiler flag for rpath (e.g., "-Wl,-rpath,")
@@ -5881,6 +5890,65 @@ else
   RANLIB="$ac_cv_prog_RANLIB"
 fi
 
+
+#--------------------------------------- shared library
+
+LIB_SUFFIX=""
+
+BUILD_SHARED=""
+
+BUILD_SHARED_LIBS=""
+
+BUILD_CFLAGS=""
+
+BUILD_CXXFLAGS=""
+
+# Check whether --enable-shared was given.
+if test ${enable_shared+y}
+then :
+  enableval=$enable_shared;
+else $as_nop
+  enable_shared="auto"
+fi
+
+
+if test "$enable_shared" = "auto"; then
+	enable_shared="yes"
+fi
+
+if test "$enable_shared" = "yes"; then
+    /bin/rm -f src/liblssp.a src/liblssp.dll
+    LIB_SUFFIX=".so"
+
+    if test -n "$with_build_shared"; then
+        BUILD_SHARED="$with_build_shared"
+    elif gcc -v >/dev/null 2>&1 && \
+         test "$cross_compiling" != "yes" && \
+         test "$target_vendor" != "apple" # MacOS: force using "${CC} -shared"
+    then
+        BUILD_SHARED="gcc -shared"
+    else
+        BUILD_SHARED="\${CC} -shared"
+    fi
+
+    # TODO: figure out a proper way to determine when to use the PIC flag
+    if test "$target_cpu" != "i686" -a "$target_cpu" != "i586" -a \
+            "$target_cpu" != "i486" -a "$target_cpu" != "i386"; then
+        BUILD_CFLAGS="-fPIC"
+        BUILD_CXXFLAGS="-fPIC"
+            fi
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: *** building shared library liblssp$LIB_SUFFIX (\"$BUILD_SHARED\")" >&5
+printf "%s\n" "$as_me: *** building shared library liblssp$LIB_SUFFIX (\"$BUILD_SHARED\")" >&6;}
+else
+    /bin/rm -f src/liblssp.so
+    LIB_SUFFIX=".a"
+    BUILD_SHARED=""
+    BUILD_CFLAGS=""
+    BUILD_CXXFLAGS=""
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: *** building static library liblssp$LIB_SUFFIX" >&5
+printf "%s\n" "$as_me: *** building static library liblssp$LIB_SUFFIX" >&6;}
+fi
 
 #--------------------------------------- OpenMP
 #AC_LANG(C)
