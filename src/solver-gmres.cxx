@@ -182,7 +182,7 @@ int lssp_solver_gmres(LSSP_SOLVER &solver, LSSP_PC &pc)
         }
 
 solve:
-        kk = i;
+        kk = i == m ? m : i + 1;
         for (i = kk - 1; i >= 0; i--) {
             double upper_temp;
 
@@ -406,7 +406,7 @@ int lssp_solver_gmres_r(LSSP_SOLVER &solver, LSSP_PC &pc)
             beta = fabs(gg[i + 1]);
 
             if (solver.verb >= 1) {
-                lssp_printf("gmres: itr: %4d, abs res: %.6e, rel res: %.6e, rbn: %.6e\n", \
+                lssp_printf("rgmres: itr: %4d, abs res: %.6e, rel res: %.6e, rbn: %.6e\n", \
                         itr_inner, beta, (err_rel == 0 ? 0 : beta / err_rel), \
                         (b_norm == 0 ? 0 : beta / b_norm));
             }
@@ -417,7 +417,7 @@ int lssp_solver_gmres_r(LSSP_SOLVER &solver, LSSP_PC &pc)
         }
 
 solve:
-        kk = i;
+        kk = i == m ? m : i + 1;
         for (i = kk - 1; i >= 0; i--) {
             ym[i] = gg[i] / Hg[i][i];
             for (j = 0; j < i; j++) {
